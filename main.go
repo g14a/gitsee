@@ -5,6 +5,7 @@ import (
 	"gitsee/service"
 	"log"
 	"net/http"
+	"github.com/gorilla/handlers"
 )
 
 func main() {
@@ -12,5 +13,5 @@ func main() {
 	
 	r.HandleFunc("/user/{username}", service.GetUserInfo)
 	
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(r)))
 }
