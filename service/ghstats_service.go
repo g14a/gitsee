@@ -1,9 +1,7 @@
 package service
 
 import (
-	json2 "encoding/json"
 	"fmt"
-	"github.com/dustin/go-humanize"
 	"github.com/google/go-github/github"
 	"gitsee/client"
 	"gitsee/models"
@@ -117,22 +115,27 @@ func StatsOfContributor(repoName, owner string) int {
 	return totalCommitsOfUser
 }
 
-// done
-func ReposStarsAndForks(repoStats []models.AbstractRepo) map[string]interface{} {
-	reposStars := make(map[string]interface{}, 0)
+func ReposForks(repoStats []models.AbstractRepo) map[string]interface{} {
+	reposForks := make(map[string]interface{}, 0)
 
 	for _, v := range repoStats {
-		reposStars[v.RepoName] = map[string]interface{}{
-			"stars":   v.StarCount,
-			"forks":   v.ForksCount,
-			"commits": v.UserCommitCount,
-		}
+		reposForks[v.RepoName] = v.ForksCount
 	}
 
+	return reposForks
+}
+
+func RepoStars(repoStats []models.AbstractRepo) map[string]interface{} {
+	reposStars := make(map[string]interface{}, 0)
+	
+	for _, v := range repoStats {
+		reposStars[v.RepoName] = v.StarCount
+	}
+	
 	return reposStars
 }
 
-func FrequencyOfLanguages(repoStats []models.AbstractRepo) {
+func FrequencyOfLanguages(repoStats []models.AbstractRepo) map[string]int {
 	languageFreqs := make(map[string]int)
 
 	for _, language := range DistinctLanguagesofUser {
@@ -145,26 +148,5 @@ func FrequencyOfLanguages(repoStats []models.AbstractRepo) {
 		}
 	}
 
-	json, _ := json2.Marshal(languageFreqs)
-	fmt.Println(string(json))
-}
-
-func UserDetails(user string) (map[string]interface{}, error) {
-	ghUser, _, err := client.GHClient.Users.Get(client.GHContext, user)
-
-	if err != nil {
-		fmt.Printf("Problem in getting user information %v\n", err)
-		return nil, err
-	}
-
-	return map[string]interface{}{
-		"user": map[string]interface{}{
-			"name":      ghUser.GetName(),
-			"joined":    "Joined GitHub " + humanize.Time(ghUser.GetCreatedAt().Time),
-			"location":  ghUser.GetLocation(),
-			"avatar":    ghUser.GetAvatarURL(),
-			"url":       ghUser.GetHTMLURL(),
-			"followers": ghUser.GetFollowers(),
-		},
-	}, nil
+	return languageFreqs
 }

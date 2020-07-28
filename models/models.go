@@ -7,3 +7,10 @@ type AbstractRepo struct {
 	StarCount       int
 	ForksCount      int
 }
+
+type AbsoluteResponse struct {
+	UserDetails map[string]interface{}
+	FrequencyOfLanguages map[string]int
+	ReposStars map[string]interface{}
+	ReposForks map[string]interface{}
+}
