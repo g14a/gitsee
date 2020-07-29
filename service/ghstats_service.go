@@ -7,10 +7,10 @@ import (
 	"gitsee/models"
 	"strings"
 	"sync"
+	"time"
 )
 
 var (
-	ReposOwnedByUser        []string
 	DistinctLanguagesofUser []string
 )
 
@@ -49,25 +49,31 @@ func GetRepoStats(owner string) []models.AbstractRepo {
 	repoStats := make([]models.AbstractRepo, 0)
 
 	var wg sync.WaitGroup
+	
+	fmt.Println(len(stats))
 	wg.Add(len(stats))
 
 	GetRepoStats := func() {
 		for _, v := range stats {
-			v := v
-			go func() {
+			go func(v *github.Repository) {
 				defer wg.Done()
-				languageStats, _, _ := client.GHClient.Repositories.ListLanguages(client.GHContext, owner, v.GetName())
-
+				// languageStats, _, _ := client.GHClient.Repositories.ListLanguages(client.GHContext, owner, v.GetName())
+				
+				start := time.Now()
+				time.Sleep(time.Millisecond*50)
+				userCommitCount := StatsOfContributor(v.GetName(), owner)
+				fmt.Println(time.Since(start))
+				
 				repoStat := &models.AbstractRepo{
 					RepoName:   v.GetName(),
-					Languages:  languageStats,
+				//	Languages:  languageStats,
 					StarCount:  v.GetStargazersCount(),
 					ForksCount: v.GetForksCount(),
+					UserCommitCount: userCommitCount,
 				}
-
-				repoStat.UserCommitCount = StatsOfContributor(v.GetName(), owner)
+				
 				repoStats = append(repoStats, *repoStat)
-			}()
+			}(v)
 		}
 
 		wg.Wait()
@@ -75,7 +81,7 @@ func GetRepoStats(owner string) []models.AbstractRepo {
 
 	GetRepoStats()
 
-	GetDistinctLanguagesOfUsersRepos(repoStats)
+	// GetDistinctLanguagesOfUsersRepos(repoStats)
 
 	return repoStats
 }
@@ -108,7 +114,7 @@ func StatsOfContributor(repoName, owner string) int {
 	totalCommitsOfUser := 0
 	for _, v := range stats {
 		if strings.Contains(v.GetAuthor().GetURL(), owner) {
-			totalCommitsOfUser += v.GetTotal()
+			totalCommitsOfUser = v.GetTotal()
 		}
 	}
 
@@ -119,7 +125,9 @@ func ReposForks(repoStats []models.AbstractRepo) map[string]interface{} {
 	reposForks := make(map[string]interface{}, 0)
 
 	for _, v := range repoStats {
-		reposForks[v.RepoName] = v.ForksCount
+		if v.ForksCount > 0 {
+			reposForks[v.RepoName] = v.ForksCount
+		}
 	}
 
 	return reposForks
@@ -129,10 +137,24 @@ func RepoStars(repoStats []models.AbstractRepo) map[string]interface{} {
 	reposStars := make(map[string]interface{}, 0)
 	
 	for _, v := range repoStats {
-		reposStars[v.RepoName] = v.StarCount
+		if v.StarCount > 0 {
+			reposStars[v.RepoName] = v.StarCount
+		}
 	}
 	
 	return reposStars
+}
+
+func RepoCommits(repoStats []models.AbstractRepo) map[string]interface{} {
+	reposCommits := make(map[string]interface{}, 0)
+	
+	for _, v := range repoStats {
+		if v.UserCommitCount > 0 {
+			reposCommits[v.RepoName] = v.UserCommitCount
+		}
+	}
+	
+	return reposCommits
 }
 
 func FrequencyOfLanguages(repoStats []models.AbstractRepo) map[string]int {

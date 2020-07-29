@@ -13,4 +13,5 @@ type AbsoluteResponse struct {
 	FrequencyOfLanguages map[string]int
 	ReposStars map[string]interface{}
 	ReposForks map[string]interface{}
+	ReposCommits map[string]interface{}
 }
