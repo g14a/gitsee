@@ -2,26 +2,33 @@ package service
 
 import (
 	"fmt"
-	"github.com/dustin/go-humanize"
+	"github.com/shurcooL/githubv4"
 	"gitsee/client"
 )
 
-func UserDetails(user string) (map[string]interface{}, error) {
-	ghUser, _, err := client.GHClient.Users.Get(client.GHContext, user)
+func UserDetails(user string) {
 	
-	if err != nil {
-		fmt.Printf("Problem in getting user information %v\n", err)
-		return nil, err
+	var query struct {
+		User struct {
+			Name githubv4.String
+			CreatedAt githubv4.DateTime
+			AvatarURL githubv4.String
+			Location githubv4.String
+			Bio githubv4.String
+			Followers struct {
+				TotalCount githubv4.Int
+			}
+		} `graphql:"user(login: $user)"`
 	}
 	
-	return map[string]interface{}{
-		"user": map[string]interface{}{
-			"name":      ghUser.GetName(),
-			"joined":    "Joined GitHub " + humanize.Time(ghUser.GetCreatedAt().Time),
-			"location":  ghUser.GetLocation(),
-			"avatar":    ghUser.GetAvatarURL(),
-			"url":       ghUser.GetHTMLURL(),
-			"followers": ghUser.GetFollowers(),
-		},
-	}, nil
+	variables := map[string]interface{} {
+		"user": githubv4.String(user),
+	}
+	
+	err := client.GHClient.Query(client.GHContext, &query, variables)
+	if err != nil {
+		fmt.Println(err)
+	}
+	
+	fmt.Println(query)
 }

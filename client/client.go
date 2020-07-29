@@ -2,13 +2,14 @@ package client
 
 import (
 	"context"
-	"github.com/google/go-github/github"
+	"github.com/shurcooL/githubv4"
+	_ "github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 	"sync"
 )
 
 var (
-	GHClient  github.Client
+	GHClient  githubv4.Client
 	GHContext context.Context
 	once      sync.Once
 	ghToken   = "12d2647357241f80e2959a0c448efa299b803511"
@@ -20,12 +21,12 @@ func init() {
 	})
 }
 
-func getGHClient(token string) (github.Client, context.Context) {
+func getGHClient(token string) (githubv4.Client, context.Context) {
 	ghContext := context.Background()
 	tokenService := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
 	tokenClient := oauth2.NewClient(ghContext, tokenService)
 
-	return *github.NewClient(tokenClient), ghContext
+	return *githubv4.NewClient(tokenClient), ghContext
 }
