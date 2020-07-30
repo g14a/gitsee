@@ -5,9 +5,11 @@ import (
 )
 
 func main() {
-	
-	service.UserDetails("g14a")
-	
+
+	//	service.UserDetails("g14a")
+
+	service.ForksStarsLanguages("kovidgoyal", 100, 100)
+
 	// r := mux.NewRouter()
 	//
 	// r.HandleFunc("/user/{username}", service.GetUserInfo)

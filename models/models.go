@@ -9,9 +9,9 @@ type AbstractRepo struct {
 }
 
 type AbsoluteResponse struct {
-	UserDetails map[string]interface{}
+	UserDetails          map[string]interface{}
 	FrequencyOfLanguages map[string]int
-	ReposStars map[string]interface{}
-	ReposForks map[string]interface{}
-	ReposCommits map[string]interface{}
+	ReposStars           map[string]interface{}
+	ReposForks           map[string]interface{}
+	ReposCommits         map[string]interface{}
 }
