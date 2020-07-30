@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/dustin/go-humanize"
 	"github.com/shurcooL/githubv4"
 	"gitsee/client"
 	"log"
@@ -22,7 +23,7 @@ func UserDetails(user string) (map[string]interface{}, error) {
 
 	return map[string]interface{}{
 		"name":       mapUser.Name,
-		"created_at": mapUser.CreatedAt,
+		"created_at": "Joined Github " + humanize.Time(mapUser.CreatedAt.Time),
 		"bio":        mapUser.Bio,
 		"location":   mapUser.Location,
 		"avatar_url": mapUser.AvatarURL,
