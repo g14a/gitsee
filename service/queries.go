@@ -39,15 +39,12 @@ type Nodes struct {
 	StarGazers struct {
 		TotalCount githubv4.Int
 	} `graphql:"stargazers"`
-	Name githubv4.String
+	Name      githubv4.String
 	ForkCount githubv4.Int
 	Languages struct {
 		TotalCount githubv4.Int
 		Nodes      []Language
 	} `graphql:"languages(first: $languageCount)"`
-	Object struct {
-		Commit Commit `graphql:"... on Commit"`
-	} `graphql:"object(expression: \"master\")"`
 }
 
 type Commit struct {

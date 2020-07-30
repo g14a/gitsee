@@ -1,20 +1,32 @@
 package service
 
 import (
-	"fmt"
 	"github.com/shurcooL/githubv4"
 	"gitsee/client"
+	"log"
+	"sync"
 )
 
 var (
-	ReposForks          map[string]interface{}
-	ReposStars          map[string]interface{}
-	LanguageFrequencies map[string]int
-	PrimaryLanguages    map[string]int
-	PrimaryLanguageStars map[string]int
+	ReposForks           = make(map[string]interface{})
+	ReposStars           = make(map[string]interface{})
+	LanguageFrequencies  = make(map[string]int)
+	PrimaryLanguages     = make(map[string]int)
+	PrimaryLanguageStars = make(map[string]int)
+	once sync.Once
 )
 
-func ForksStarsLanguages(user string, repoCount, languageCount int) {
+func GetAllStats(user string, repoCount, languageCount int)  {
+	once.Do(func() {
+		err := ForksStarsLanguages(user, repoCount, languageCount)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	})
+}
+
+func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	variables := map[string]interface{}{
 		"user":          githubv4.String(user),
 		"repoCount":     githubv4.Int(repoCount),
@@ -23,49 +35,40 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) {
 
 	err := client.GHClient.Query(client.GHContext, &ForksStarsLanguagesQuery, variables)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
+		return err
 	}
-
-	reposForks := make(map[string]interface{})
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
 		if v.ForkCount > 0 {
-			reposForks[string(v.Name)] = v.ForkCount
+			ReposForks[string(v.Name)] = v.ForkCount
 		}
-	}
-
-	reposStars := make(map[string]interface{})
-
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
-		if v.StarGazers.TotalCount > 0 {
-			reposStars[string(v.Name)] = v.StarGazers.TotalCount
-		}
-	}
-
-	ReposForks = reposForks
-	ReposStars = reposStars
-
-	languageFrequencies := make(map[string]int)
-
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
-		for _, repo := range v.Languages.Nodes {
-			languageFrequencies[string(repo.Name)] += 1
-		}
-	}
-
-	primaryLanguages := make(map[string]int)
-
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
-		primaryLanguages[string(v.PrimaryLanguage.Name)] += 1
 	}
 	
-	primaryLanguageStars := make(map[string]int)
+	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+		if v.StarGazers.TotalCount > 0 {
+			ReposStars[string(v.Name)] = v.StarGazers.TotalCount
+		}
+	}
+	
+	
+	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+		for _, repo := range v.Languages.Nodes {
+			LanguageFrequencies[string(repo.Name)] += 1
+		}
+	}
+	
+	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+		if len(v.PrimaryLanguage.Name) > 0 {
+			PrimaryLanguages[string(v.PrimaryLanguage.Name)] += 1
+		}
+	}
 	
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
 		if v.StarGazers.TotalCount > 0 && len(v.PrimaryLanguage.Name) > 0 {
-			primaryLanguageStars[string(v.PrimaryLanguage.Name)] += int(v.StarGazers.TotalCount)
+			PrimaryLanguageStars[string(v.PrimaryLanguage.Name)] += int(v.StarGazers.TotalCount)
 		}
 	}
-	
-	LanguageFrequencies = languageFrequencies
+
+	return nil
 }

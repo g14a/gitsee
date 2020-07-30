@@ -1,18 +1,18 @@
 package main
 
 import (
-	"gitsee/service"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"gitsee/api"
+	"log"
+	"net/http"
 )
 
 func main() {
-
-	//	service.UserDetails("g14a")
-
-	service.ForksStarsLanguages("kovidgoyal", 100, 100)
-
-	// r := mux.NewRouter()
-	//
-	// r.HandleFunc("/user/{username}", service.GetUserInfo)
-	//
-	// log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(r)))
+	r := mux.NewRouter()
+	
+	r.HandleFunc("/user/{username}", api.GetUserInfo)
+	r.HandleFunc("/user/{username}/{stat}", api.RepoStats)
+	
+	log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(r)))
 }

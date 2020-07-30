@@ -1,13 +1,12 @@
 package service
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/shurcooL/githubv4"
 	"gitsee/client"
+	"log"
 )
 
-func UserDetails(user string) {
+func UserDetails(user string) (map[string]interface{}, error) {
 
 	variables := map[string]interface{}{
 		"user": githubv4.String(user),
@@ -15,20 +14,19 @@ func UserDetails(user string) {
 
 	err := client.GHClient.Query(client.GHContext, &UserQuery, variables)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	mapUser := UserQuery.User
 
-	jsonResponse := map[string]interface{}{
+	return map[string]interface{}{
 		"name":       mapUser.Name,
 		"created_at": mapUser.CreatedAt,
 		"bio":        mapUser.Bio,
 		"location":   mapUser.Location,
 		"avatar_url": mapUser.AvatarURL,
 		"followers":  mapUser.Followers.TotalCount,
-	}
+	}, nil
 
-	bytes, _ := json.Marshal(jsonResponse)
-	fmt.Println(string(bytes))
 }
