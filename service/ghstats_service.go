@@ -40,12 +40,10 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 
 	ReposForks = repoForks
 
-	if cache.RistrettoCache.SetWithTTL(user+"RepoForks", repoForks, 1, time.Second*5) {
+	if cache.Set(user+"RepoForks", repoForks) {
 		log.Println(user + "RepoForks added to cache")
 	}
-
-	time.Sleep(10 * time.Millisecond)
-
+	
 	repoStars := make(map[string]interface{})
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
@@ -56,12 +54,10 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 
 	ReposStars = repoStars
 
-	if cache.RistrettoCache.SetWithTTL(user+"RepoStars", repoStars, 1, time.Second*5) {
+	if cache.Set(user+"RepoStars", repoStars) {
 		log.Println(user + "RepoStars added to cache")
 	}
-
-	time.Sleep(10 * time.Millisecond)
-
+	
 	languageFrequencies := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
@@ -72,12 +68,10 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 
 	LanguageFrequencies = languageFrequencies
 
-	if cache.RistrettoCache.SetWithTTL(user+"LanguageFrequencies", languageFrequencies, 1, time.Second*5) {
+	if cache.Set(user+"LanguageFrequencies", languageFrequencies) {
 		log.Println(user + "LanguageFrequencies added to cache")
 	}
-
-	time.Sleep(10 * time.Millisecond)
-
+	
 	primaryLanguages := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
@@ -86,12 +80,10 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		}
 	}
 
-	if cache.RistrettoCache.SetWithTTL(user+"PrimaryLanguages", primaryLanguages, 1, time.Second*5) {
+	if cache.Set(user+"PrimaryLanguages", primaryLanguages) {
 		log.Println(user + "PrimaryLanguages added to cache")
 	}
-
-	time.Sleep(10 * time.Millisecond)
-
+	
 	PrimaryLanguages = primaryLanguages
 
 	primaryLanguageStars := make(map[string]int)
@@ -102,20 +94,20 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		}
 	}
 
-	if cache.RistrettoCache.SetWithTTL(user+"PrimaryLanguageStars", primaryLanguageStars, 1, time.Second*5) {
+	if cache.Set(user+"PrimaryLanguageStars", primaryLanguageStars) {
 		log.Println(user + "PrimaryLanguageStars added to cache")
 	}
-
-	time.Sleep(10 * time.Millisecond)
-
+	
 	PrimaryLanguageStars = primaryLanguageStars
 
+	time.Sleep(time.Millisecond*10)
+	
 	return nil
 }
 
 func GetWantedStatFromCache(username, wantedStat string) (interface{}, error) {
 	// Get wanted stat from cache
-	if result, ok := cache.RistrettoCache.Get(username + wantedStat); ok {
+	if result, ok := cache.Get(username + wantedStat); ok {
 		return result, nil
 	} else {
 		return nil, errors.New("could not find stat in cache")
