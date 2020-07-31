@@ -2,9 +2,10 @@ package client
 
 import (
 	"context"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/shurcooL/githubv4"
-	_ "github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
+	"os"
 	"sync"
 )
 
@@ -12,11 +13,11 @@ var (
 	GHClient  githubv4.Client
 	GHContext context.Context
 	once      sync.Once
-	ghToken   = "38afc011f6d900ba4c1a89063e91f27fa86ce135"
 )
 
 func init() {
 	once.Do(func() {
+		ghToken := os.Getenv("GHTOKEN")
 		GHClient, GHContext = getGHClient(ghToken)
 	})
 }
