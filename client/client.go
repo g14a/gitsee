@@ -12,7 +12,7 @@ var (
 	GHClient  githubv4.Client
 	GHContext context.Context
 	once      sync.Once
-	ghToken   = "12d2647357241f80e2959a0c448efa299b803511"
+	ghToken   = "38afc011f6d900ba4c1a89063e91f27fa86ce135"
 )
 
 func init() {
@@ -27,6 +27,5 @@ func getGHClient(token string) (githubv4.Client, context.Context) {
 		&oauth2.Token{AccessToken: token},
 	)
 	tokenClient := oauth2.NewClient(ghContext, tokenService)
-
 	return *githubv4.NewClient(tokenClient), ghContext
 }
