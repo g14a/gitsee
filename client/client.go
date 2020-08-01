@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
@@ -18,6 +19,7 @@ var (
 func init() {
 	once.Do(func() {
 		ghToken := os.Getenv("GHTOKEN")
+		fmt.Println(ghToken, "is ghtoken")
 		GHClient, GHContext = getGHClient(ghToken)
 	})
 }

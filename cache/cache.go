@@ -27,7 +27,7 @@ func InitRistrettoCache() *ristretto.Cache {
 
 // Cache Set with TTL of 5 days
 func Set(key, value interface{}) bool {
-	if RistrettoCache.SetWithTTL(key, value, 1, time.Second*5) {
+	if RistrettoCache.SetWithTTL(key, value, 1, time.Hour*5) {
 		return true
 	}
 	return false

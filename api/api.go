@@ -31,7 +31,6 @@ func RepoStats(w http.ResponseWriter, r *http.Request) {
 
 	// err == nil means the stat is returned from cache if not store it in cache
 	if err != nil {
-		
 		err = service.ForksStarsLanguages(username, 100, 100)
 		if err != nil {
 			respondWithError(w, http.StatusNotFound, err.Error())
