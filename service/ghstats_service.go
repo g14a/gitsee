@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"github.com/shurcooL/githubv4"
 	"gitsee/cache"
 	"gitsee/client"
@@ -105,11 +104,11 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	return nil
 }
 
-func GetWantedStatFromCache(username, wantedStat string) (interface{}, error) {
+func GetWantedStatFromCache(username, wantedStat string) (interface{}, bool) {
 	// Get wanted stat from cache
 	if result, ok := cache.Get(username + wantedStat); ok {
-		return result, nil
+		return result, true
 	} else {
-		return nil, errors.New("could not find stat in cache")
+		return nil, false
 	}
 }
