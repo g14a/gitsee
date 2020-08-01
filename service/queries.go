@@ -11,12 +11,13 @@ var UserQuery struct {
 		CreatedAt githubv4.DateTime
 		AvatarURL githubv4.URI
 		Location  githubv4.String
-		Bio       githubv4.String
+		URL       githubv4.URI
 		Followers struct {
 			TotalCount githubv4.Int
 		}
 	} `graphql:"user(login: $user)"`
 }
+
 // UserQuery end
 
 // ForksStarsLanguagesQuery start

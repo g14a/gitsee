@@ -42,7 +42,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	if cache.Set(user+"RepoForks", repoForks) {
 		log.Println(user + "RepoForks added to cache")
 	}
-	
+
 	repoStars := make(map[string]interface{})
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
@@ -56,7 +56,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	if cache.Set(user+"RepoStars", repoStars) {
 		log.Println(user + "RepoStars added to cache")
 	}
-	
+
 	languageFrequencies := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
@@ -70,7 +70,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	if cache.Set(user+"LanguageFrequencies", languageFrequencies) {
 		log.Println(user + "LanguageFrequencies added to cache")
 	}
-	
+
 	primaryLanguages := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
@@ -82,7 +82,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	if cache.Set(user+"PrimaryLanguages", primaryLanguages) {
 		log.Println(user + "PrimaryLanguages added to cache")
 	}
-	
+
 	PrimaryLanguages = primaryLanguages
 
 	primaryLanguageStars := make(map[string]int)
@@ -96,11 +96,11 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	if cache.Set(user+"PrimaryLanguageStars", primaryLanguageStars) {
 		log.Println(user + "PrimaryLanguageStars added to cache")
 	}
-	
+
 	PrimaryLanguageStars = primaryLanguageStars
 
-	time.Sleep(time.Millisecond*10)
-	
+	time.Sleep(time.Millisecond * 10)
+
 	return nil
 }
 
