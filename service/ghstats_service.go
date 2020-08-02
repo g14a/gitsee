@@ -4,6 +4,7 @@ import (
 	"github.com/shurcooL/githubv4"
 	"gitsee/cache"
 	"gitsee/client"
+	"gitsee/color"
 	"log"
 	"time"
 )
@@ -79,11 +80,15 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		}
 	}
 
+	PrimaryLanguages = primaryLanguages
+
 	if cache.Set(user+"PrimaryLanguages", primaryLanguages) {
 		log.Println(user + "PrimaryLanguages added to cache")
 	}
 
-	PrimaryLanguages = primaryLanguages
+	if len(primaryLanguages) > 0 {
+		color.GetColorCodesForLanguages(user, primaryLanguages)
+	}
 
 	primaryLanguageStars := make(map[string]int)
 

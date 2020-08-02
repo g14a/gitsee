@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"gitsee/color"
 	"gitsee/service"
 	"net/http"
 )
@@ -51,6 +52,15 @@ func RepoStats(w http.ResponseWriter, r *http.Request) {
 	} else {
 		respondWithJSON(w, http.StatusOK, response)
 	}
+}
+
+func GetColorCodes(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	username := params["username"]
+
+	color.GetColorCodesForLanguages(username, service.PrimaryLanguages)
+
+	respondWithJSON(w, http.StatusOK, color.LanguageColors)
 }
 
 func respondWithError(w http.ResponseWriter, httpCode int, message string) {
