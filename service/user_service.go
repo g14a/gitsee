@@ -27,13 +27,13 @@ func UserDetails(user string) (interface{}, error) {
 	}
 
 	mapUser := UserQuery.User
-
 	jsonResponse := map[string]interface{}{
+		"username":   mapUser.Login,
 		"name":       mapUser.Name,
-		"created_at": "Joined Github " + humanize.Time(mapUser.CreatedAt.Time),
+		"created_at": "Joined " + humanize.Time(mapUser.CreatedAt.Time),
 		"location":   mapUser.Location,
 		"avatar_url": mapUser.AvatarURL,
-		"followers":  mapUser.Followers.TotalCount,
+		"followers":  humanize.Comma(int64(mapUser.Followers.TotalCount)),
 		"url":        mapUser.URL,
 	}
 

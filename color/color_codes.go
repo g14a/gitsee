@@ -1,24 +1,20 @@
 package color
 
 import (
-	"fmt"
 	"gitsee/cache"
 	"log"
+	"math"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
 var DarkThemedColors = []string{
-	"#eeeeee", "#00adb5", "#3c4bbf0", "#927fbf",
-	"#0a91ab", "#ffc045", "#f30a49", "#04879c",
-	"#e43f5a", "#f2a365", "#ffbd69", "#ff6363",
-	"#29c7ac", "#bbe1fa", "#3282b8", "#515585",
-	"#ee4540", "#c72c41", "#b030b0", "#a72693",
-	"#ff6768", "#3ca3e47", "#d65a31", "#69779b",
-	"#e14594", "#278ea5", "#616f39", "#85cfcb",
-	"#3c6562", "#4ecca3", "#00818a", "#8d6262",
-	"#a0204c", "#ff8ba0", "#ff5733", "#9a0f98",
-	"#77abb7", "#b0a565", "#e47676", "#90b8f8",
+	"#f4b89a", "#f36721", "#f2c543", "#f24843",
+	"#afd142", "#ece74c", "#91dc32", "#5cb258",
+	"#08f14b", "#00ffaa", "#00c6b4", "#0096c6",
+	"#3f97fb", "#6b79fe", "#7737ff", "#f000ff",
+	"#ff006c", "#b1a2a5", "#ac727d",
 }
 
 var LanguageColors map[string]interface{}
@@ -28,7 +24,6 @@ func GetColorCodesForLanguages(user string, languages map[string]int) {
 	if colorCodes, ok := cache.Get(user + "Colors"); ok {
 		log.Println("Got", user, "Colors from cache")
 		LanguageColors = colorCodes.(map[string]interface{})
-		fmt.Println(LanguageColors)
 	} else {
 		rand.Seed(time.Now().UnixNano())
 
@@ -49,7 +44,27 @@ func GetColorCodesForLanguages(user string, languages map[string]int) {
 			}
 		}
 	}
+}
 
+func CompareSimilarColors(c1, c2 string) bool {
+
+	r1, _ := strconv.ParseInt(c1[1:3], 16, 16)
+	g1, _ := strconv.ParseInt(c1[3:5], 16, 16)
+	b1, _ := strconv.ParseInt(c1[5:7], 16, 16)
+
+	r2, _ := strconv.ParseInt(c2[1:3], 16, 16)
+	g2, _ := strconv.ParseInt(c2[3:5], 16, 16)
+	b2, _ := strconv.ParseInt(c2[5:7], 16, 16)
+
+	r := 255 - math.Abs(float64(r1-r2))
+	g := 255 - math.Abs(float64(g1-g2))
+	b := 255 - math.Abs(float64(b1-b2))
+
+	r /= 255
+	g /= 255
+	b /= 255
+
+	return (r+g+b)/3 < 0.5
 }
 
 func remove(s []string, i int) []string {

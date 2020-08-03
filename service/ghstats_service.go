@@ -1,17 +1,19 @@
 package service
 
 import (
+	"fmt"
 	"github.com/shurcooL/githubv4"
 	"gitsee/cache"
 	"gitsee/client"
 	"gitsee/color"
+	"gitsee/utils"
 	"log"
 	"time"
 )
 
 var (
-	ReposForks           = make(map[string]interface{})
-	ReposStars           = make(map[string]interface{})
+	ReposForks           = make(map[string]int)
+	ReposStars           = make(map[string]int)
 	LanguageFrequencies  = make(map[string]int)
 	PrimaryLanguages     = make(map[string]int)
 	PrimaryLanguageStars = make(map[string]int)
@@ -30,79 +32,115 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		return err
 	}
 
-	repoForks := make(map[string]interface{})
+	repoForks := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
 		if v.ForkCount > 0 {
-			repoForks[string(v.Name)] = v.ForkCount
+			repoForks[v.Name] = v.ForkCount
+		}
+	}
+	
+	if len(repoForks) > 10 {
+		sortedRepoForks := utils.GetSortedMap(repoForks)
+		ReposForks = sortedRepoForks
+		if cache.Set(user+"RepoForks", ReposForks) {
+			log.Println(user + "RepoForks added to cache")
+		}
+	} else {
+		ReposForks = repoForks
+		if cache.Set(user+"RepoForks", ReposForks) {
+			log.Println(user + "RepoForks added to cache")
 		}
 	}
 
-	ReposForks = repoForks
-
-	if cache.Set(user+"RepoForks", repoForks) {
-		log.Println(user + "RepoForks added to cache")
-	}
-
-	repoStars := make(map[string]interface{})
+	repoStars := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
 		if v.StarGazers.TotalCount > 0 {
-			repoStars[string(v.Name)] = v.StarGazers.TotalCount
+			repoStars[v.Name] = v.StarGazers.TotalCount
 		}
 	}
 
-	ReposStars = repoStars
-
-	if cache.Set(user+"RepoStars", repoStars) {
-		log.Println(user + "RepoStars added to cache")
+	if len(repoStars) >= 10 {
+		sortedRepoStars := utils.GetSortedMap(repoStars)
+		ReposStars = sortedRepoStars
+		if cache.Set(user+"RepoStars", ReposStars) {
+			log.Println(user + "RepoStars added to cache")
+		}
+	} else {
+		ReposStars = repoStars
+		if cache.Set(user+"RepoStars", ReposStars) {
+			log.Println(user + "RepoStars added to cache")
+		}
 	}
 
 	languageFrequencies := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
 		for _, repo := range v.Languages.Nodes {
-			languageFrequencies[string(repo.Name)] += 1
+			languageFrequencies[repo.Name] += 1
 		}
 	}
 
-	LanguageFrequencies = languageFrequencies
-
-	if cache.Set(user+"LanguageFrequencies", languageFrequencies) {
-		log.Println(user + "LanguageFrequencies added to cache")
+	if len(languageFrequencies) >= 10 {
+		sortedLanguagesFrequencies := utils.GetSortedMap(languageFrequencies)
+		LanguageFrequencies = sortedLanguagesFrequencies
+		if cache.Set(user+"LanguageFrequencies", sortedLanguagesFrequencies) {
+			log.Println(user + "LanguageFrequencies added to cache")
+		}
+	} else {
+		LanguageFrequencies = languageFrequencies
+		if cache.Set(user+"LanguageFrequencies", languageFrequencies) {
+			log.Println(user + "LanguageFrequencies added to cache")
+		}
 	}
-
+	
+	if len(languageFrequencies) > 0 {
+		color.GetColorCodesForLanguages(user, LanguageFrequencies)
+	}
+	
 	primaryLanguages := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
 		if len(v.PrimaryLanguage.Name) > 0 {
-			primaryLanguages[string(v.PrimaryLanguage.Name)] += 1
+			primaryLanguages[v.PrimaryLanguage.Name] += 1
 		}
 	}
 
-	PrimaryLanguages = primaryLanguages
-
-	if cache.Set(user+"PrimaryLanguages", primaryLanguages) {
-		log.Println(user + "PrimaryLanguages added to cache")
-	}
-
-	if len(primaryLanguages) > 0 {
-		color.GetColorCodesForLanguages(user, primaryLanguages)
+	if len(primaryLanguages) >= 10 {
+		fmt.Println(len(primaryLanguages), " is length of primary languages")
+		sortedLanguages := utils.GetSortedMap(primaryLanguages)
+		PrimaryLanguages = sortedLanguages
+		if cache.Set(user+"PrimaryLanguages", sortedLanguages) {
+			log.Println(user + "PrimaryLanguages added to cache")
+		}
+	} else {
+		PrimaryLanguages = primaryLanguages
+		if cache.Set(user+"PrimaryLanguages", primaryLanguages) {
+			log.Println(user + "PrimaryLanguages added to cache")
+		}
 	}
 
 	primaryLanguageStars := make(map[string]int)
 
 	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
 		if v.StarGazers.TotalCount > 0 && len(v.PrimaryLanguage.Name) > 0 {
-			primaryLanguageStars[string(v.PrimaryLanguage.Name)] += int(v.StarGazers.TotalCount)
+			primaryLanguageStars[v.PrimaryLanguage.Name] += v.StarGazers.TotalCount
 		}
 	}
 
-	if cache.Set(user+"PrimaryLanguageStars", primaryLanguageStars) {
-		log.Println(user + "PrimaryLanguageStars added to cache")
+	if len(primaryLanguageStars) >= 10 {
+		sortedLanguageStars := utils.GetSortedMap(primaryLanguageStars)
+		PrimaryLanguageStars = sortedLanguageStars
+		if cache.Set(user+"PrimaryLanguageStars", sortedLanguageStars) {
+			log.Println(user + "PrimaryLanguageStars added to cache")
+		}
+	} else {
+		PrimaryLanguageStars = primaryLanguageStars
+		if cache.Set(user+"PrimaryLanguageStars", primaryLanguageStars) {
+			log.Println(user + "PrimaryLanguageStars added to cache")
+		}
 	}
-
-	PrimaryLanguageStars = primaryLanguageStars
 
 	time.Sleep(time.Millisecond * 10)
 

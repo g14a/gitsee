@@ -7,6 +7,7 @@ import (
 // UserQuery start
 var UserQuery struct {
 	User struct {
+		Login     githubv4.String
 		Name      githubv4.String
 		CreatedAt githubv4.DateTime
 		AvatarURL githubv4.URI
@@ -31,18 +32,18 @@ var ForksStarsLanguagesQuery struct {
 
 type Nodes struct {
 	PrimaryLanguage struct {
-		Name githubv4.String
+		Name string
 	}
 	Watchers struct {
-		TotalCount githubv4.Int
+		TotalCount int
 	}
 	StarGazers struct {
-		TotalCount githubv4.Int
+		TotalCount int
 	} `graphql:"stargazers"`
-	Name      githubv4.String
-	ForkCount githubv4.Int
+	Name      string
+	ForkCount int
 	Languages struct {
-		TotalCount githubv4.Int
+		TotalCount int
 		Nodes      []Language
 	} `graphql:"languages(first: $languageCount)"`
 }
@@ -54,7 +55,7 @@ type Commit struct {
 }
 
 type Language struct {
-	Name githubv4.String
+	Name string
 }
 
 // ForksStarsLanguagesQuery end
