@@ -35,6 +35,7 @@ func RepoStats(w http.ResponseWriter, r *http.Request) {
 		err := service.ForksStarsLanguages(username, 100, 100)
 		if err != nil {
 			respondWithError(w, http.StatusNotFound, err.Error())
+			return
 		}
 
 		switch stat {

@@ -22,7 +22,6 @@ func UserDetails(user string) (interface{}, error) {
 
 	err := client.GHClient.Query(client.GHContext, &UserQuery, variables)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
