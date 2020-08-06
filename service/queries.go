@@ -22,11 +22,14 @@ var UserQuery struct {
 // UserQuery end
 
 // ForksStarsLanguagesQuery start
-var ForksStarsLanguagesQuery struct {
+var StatsQuery struct {
 	User struct {
 		Repositories struct {
 			Nodes []Nodes
 		} `graphql:"repositories(first: $repoCount, ownerAffiliations: OWNER)"`
+		ContributionsCollection struct {
+			ContributionCalendar ContributionCalendar
+		} `graph:"contributionsCollection"`
 	} `graphql:"user(login: $user)"`
 }
 
@@ -48,14 +51,24 @@ type Nodes struct {
 	} `graphql:"languages(first: $languageCount)"`
 }
 
-type Commit struct {
-	History struct {
-		TotalCount githubv4.Int
-	}
-}
-
 type Language struct {
 	Name string
 }
 
 // ForksStarsLanguagesQuery end
+
+// ContributionsQuery start
+type ContributionCalendar struct {
+	Weeks []Weeks
+}
+
+type Weeks struct {
+	ContributionDays []ContributionDays
+}
+
+type ContributionDays struct {
+	Date              string
+	ContributionCount int
+}
+
+// ContributionQuery end

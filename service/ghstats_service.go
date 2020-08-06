@@ -17,6 +17,7 @@ var (
 	LanguageFrequencies  = make(map[string]int)
 	PrimaryLanguages     = make(map[string]int)
 	PrimaryLanguageStars = make(map[string]int)
+	Contributions        = make(map[string]interface{})
 )
 
 func ForksStarsLanguages(user string, repoCount, languageCount int) error {
@@ -26,20 +27,34 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		"languageCount": githubv4.Int(languageCount),
 	}
 
-	err := client.GHClient.Query(client.GHContext, &ForksStarsLanguagesQuery, variables)
+	err := client.GHClient.Query(client.GHContext, &StatsQuery, variables)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 
+	contributions := make(map[string]interface{})
+
+	for _, v := range StatsQuery.User.ContributionsCollection.ContributionCalendar.Weeks {
+		for _, week := range v.ContributionDays {
+			contributions[week.Date] = week.ContributionCount
+		}
+	}
+
+	Contributions = contributions
+
+	if cache.Set(user+"Contributions", Contributions) {
+		log.Println(user + "Contributions set in cache")
+	}
+
 	repoForks := make(map[string]int)
 
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+	for _, v := range StatsQuery.User.Repositories.Nodes {
 		if v.ForkCount > 0 {
 			repoForks[v.Name] = v.ForkCount
 		}
 	}
-	
+
 	if len(repoForks) > 10 {
 		sortedRepoForks := utils.GetSortedMap(repoForks)
 		ReposForks = sortedRepoForks
@@ -55,7 +70,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 
 	repoStars := make(map[string]int)
 
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+	for _, v := range StatsQuery.User.Repositories.Nodes {
 		if v.StarGazers.TotalCount > 0 {
 			repoStars[v.Name] = v.StarGazers.TotalCount
 		}
@@ -76,7 +91,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 
 	languageFrequencies := make(map[string]int)
 
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+	for _, v := range StatsQuery.User.Repositories.Nodes {
 		for _, repo := range v.Languages.Nodes {
 			languageFrequencies[repo.Name] += 1
 		}
@@ -94,14 +109,14 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 			log.Println(user + "LanguageFrequencies added to cache")
 		}
 	}
-	
-	if len(languageFrequencies) > 0 {
+
+	if len(LanguageFrequencies) > 0 {
 		color.GetColorCodesForLanguages(user, LanguageFrequencies)
 	}
-	
+
 	primaryLanguages := make(map[string]int)
 
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+	for _, v := range StatsQuery.User.Repositories.Nodes {
 		if len(v.PrimaryLanguage.Name) > 0 {
 			primaryLanguages[v.PrimaryLanguage.Name] += 1
 		}
@@ -123,7 +138,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 
 	primaryLanguageStars := make(map[string]int)
 
-	for _, v := range ForksStarsLanguagesQuery.User.Repositories.Nodes {
+	for _, v := range StatsQuery.User.Repositories.Nodes {
 		if v.StarGazers.TotalCount > 0 && len(v.PrimaryLanguage.Name) > 0 {
 			primaryLanguageStars[v.PrimaryLanguage.Name] += v.StarGazers.TotalCount
 		}

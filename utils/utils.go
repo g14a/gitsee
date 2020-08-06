@@ -25,7 +25,7 @@ func (a ArraySortMap) Swap(i, j int) {
 
 func GetSortedMap(m map[string]int) map[string]int {
 	var sortMap ArraySortMap
-	
+
 	for k, v := range m {
 		sortMap = append(sortMap, SortMap{
 			Key:   k,

@@ -39,6 +39,8 @@ func RepoStats(w http.ResponseWriter, r *http.Request) {
 		}
 
 		switch stat {
+		case "Contributions":
+			respondWithJSON(w, http.StatusOK, service.Contributions)
 		case "RepoForks":
 			respondWithJSON(w, http.StatusOK, service.ReposForks)
 		case "RepoStars":
