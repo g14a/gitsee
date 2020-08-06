@@ -5,6 +5,5 @@ RUN go mod download
 ADD . /app
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 FROM scratch
-COPY --from=builder /app/.env /app/.env
 COPY --from=builder /app/main /app/main
 CMD ["/app/main"]

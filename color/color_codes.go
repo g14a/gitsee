@@ -12,9 +12,9 @@ import (
 var DarkThemedColors = []string{
 	"#f4b89a", "#f36721", "#f2c543", "#f24843",
 	"#afd142", "#ece74c", "#91dc32", "#5cb258",
-	"#08f14b", "#00ffaa", "#00c6b4", "#0096c6",
-	"#3f97fb", "#6b79fe", "#7737ff", "#f000ff",
-	"#ff006c", "#b1a2a5", "#ac727d",
+	"#08f14b", "#00ffaa", "#00c6b4", "#a8dadc",
+	"#ffb4a2", "#5e60ce", "fca311", "#ef233c",
+	"#52b788", "#7b2cbf", "#c44536",
 }
 
 var LanguageColors map[string]interface{}
