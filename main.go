@@ -6,15 +6,19 @@ import (
 	"gitsee/api"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/user/{username}", api.GetUserInfo)
-	r.HandleFunc("/user/{username}/stats/{stat}", api.RepoStats)
-	r.HandleFunc("/user/{username}/colorSet", api.GetColorCodes)
+	r.Handle("/user/{username}",
+		handlers.LoggingHandler(os.Stdout, http.HandlerFunc(api.GetUserInfo)))
+	r.Handle("/user/{username}/stats/{stat}",
+		handlers.LoggingHandler(os.Stdout, http.HandlerFunc(api.RepoStats)))
+	r.Handle("/user/{username}/colorSet",
+		handlers.LoggingHandler(os.Stdout, http.HandlerFunc(api.GetColorCodes)))
 
-	log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(r)))
+	log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(handlers.CompressHandler(r))))
 }

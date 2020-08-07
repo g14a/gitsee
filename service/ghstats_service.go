@@ -8,7 +8,6 @@ import (
 	"gitsee/color"
 	"gitsee/utils"
 	"log"
-	"time"
 )
 
 var (
@@ -32,7 +31,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		log.Println(err)
 		return err
 	}
-
+	
 	contributions := make(map[string]interface{})
 
 	for _, v := range StatsQuery.User.ContributionsCollection.ContributionCalendar.Weeks {
@@ -156,9 +155,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 			log.Println(user + "PrimaryLanguageStars added to cache")
 		}
 	}
-
-	time.Sleep(time.Millisecond * 10)
-
+	
 	return nil
 }
 
