@@ -1,20 +1,19 @@
 package color
 
 import (
+	"fmt"
 	"gitsee/cache"
 	"log"
 	"math"
-	"math/rand"
 	"strconv"
-	"time"
 )
 
 var DarkThemedColors = []string{
-	"#f4b89a", "#f36721", "#f2c543", "#f24843",
-	"#afd142", "#ece74c", "#91dc32", "#5cb258",
-	"#08f14b", "#00ffaa", "#00c6b4", "#a8dadc",
-	"#ffb4a2", "#5e60ce", "fca311", "#ef233c",
-	"#52b788", "#7b2cbf", "#c44536",
+	"#eb370c", "#f36721", "#f2c543", "#f24843",
+	"#91dc32", "#5cb258", "#afd142", "#49707a",
+	"#00ffaa", "#a8dadc", "#ffb4a2", "#00c6b4",
+	"#5e60ce", "fca311", "#ef233c", "#52b788",
+	"#7b2cbf", "#c44536",
 }
 
 var LanguageColors map[string]interface{}
@@ -25,16 +24,17 @@ func GetColorCodesForLanguages(user string, languages map[string]int) {
 		log.Println("Got", user, "Colors from cache")
 		LanguageColors = colorCodes.(map[string]interface{})
 	} else {
-		rand.Seed(time.Now().UnixNano())
-
 		colors := DarkThemedColors
 
 		languageColors := make(map[string]interface{})
+		
+		i := 0
 		for k, _ := range languages {
-			index := rand.Intn(len(colors))
-			languageColors[k] = colors[index]
-			colors = remove(colors, index)
+			languageColors[k] = colors[i]
+			i++
 		}
+		
+		fmt.Println(languageColors)
 
 		LanguageColors = languageColors
 
@@ -65,9 +65,4 @@ func CompareSimilarColors(c1, c2 string) bool {
 	b /= 255
 
 	return (r+g+b)/3 < 0.5
-}
-
-func remove(s []string, i int) []string {
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
 }

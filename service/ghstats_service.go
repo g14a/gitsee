@@ -8,6 +8,7 @@ import (
 	"gitsee/color"
 	"gitsee/utils"
 	"log"
+	"time"
 )
 
 var (
@@ -31,7 +32,9 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		log.Println(err)
 		return err
 	}
-	
+
+	start := time.Now()
+
 	contributions := make(map[string]interface{})
 
 	for _, v := range StatsQuery.User.ContributionsCollection.ContributionCalendar.Weeks {
@@ -122,7 +125,6 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 	}
 
 	if len(primaryLanguages) >= 10 {
-		fmt.Println(len(primaryLanguages), " is length of primary languages")
 		sortedLanguages := utils.GetSortedMap(primaryLanguages)
 		PrimaryLanguages = sortedLanguages
 		if cache.Set(user+"PrimaryLanguages", sortedLanguages) {
@@ -155,7 +157,9 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 			log.Println(user + "PrimaryLanguageStars added to cache")
 		}
 	}
-	
+
+	fmt.Println(time.Since(start))
+
 	return nil
 }
 
