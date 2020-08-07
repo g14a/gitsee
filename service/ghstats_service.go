@@ -1,14 +1,12 @@
 package service
 
 import (
-	"fmt"
 	"github.com/shurcooL/githubv4"
 	"gitsee/cache"
 	"gitsee/client"
 	"gitsee/color"
 	"gitsee/utils"
 	"log"
-	"time"
 )
 
 var (
@@ -20,7 +18,7 @@ var (
 	Contributions        = make(map[string]interface{})
 )
 
-func ForksStarsLanguages(user string, repoCount, languageCount int) error {
+func GetStats(user string, repoCount, languageCount int) error {
 	variables := map[string]interface{}{
 		"user":          githubv4.String(user),
 		"repoCount":     githubv4.Int(repoCount),
@@ -33,8 +31,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		return err
 	}
 
-	start := time.Now()
-
+	// Contributions of the user in the past year i.e from this time instance to exactly a year ago
 	contributions := make(map[string]interface{})
 
 	for _, v := range StatsQuery.User.ContributionsCollection.ContributionCalendar.Weeks {
@@ -49,6 +46,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		log.Println(user + "Contributions set in cache")
 	}
 
+	// Number of forks per repo
 	repoForks := make(map[string]int)
 
 	for _, v := range StatsQuery.User.Repositories.Nodes {
@@ -70,6 +68,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		}
 	}
 
+	// Number of stars per repo
 	repoStars := make(map[string]int)
 
 	for _, v := range StatsQuery.User.Repositories.Nodes {
@@ -91,6 +90,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		}
 	}
 
+	// Number of repos with a languages
 	languageFrequencies := make(map[string]int)
 
 	for _, v := range StatsQuery.User.Repositories.Nodes {
@@ -116,6 +116,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		color.GetColorCodesForLanguages(user, LanguageFrequencies)
 	}
 
+	// PrimaryLanguages
 	primaryLanguages := make(map[string]int)
 
 	for _, v := range StatsQuery.User.Repositories.Nodes {
@@ -137,6 +138,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 		}
 	}
 
+	// PrimaryLanguageStars
 	primaryLanguageStars := make(map[string]int)
 
 	for _, v := range StatsQuery.User.Repositories.Nodes {
@@ -157,9 +159,7 @@ func ForksStarsLanguages(user string, repoCount, languageCount int) error {
 			log.Println(user + "PrimaryLanguageStars added to cache")
 		}
 	}
-
-	fmt.Println(time.Since(start))
-
+	
 	return nil
 }
 

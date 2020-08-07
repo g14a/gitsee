@@ -18,12 +18,12 @@ var UserQuery struct {
 		}
 	} `graphql:"user(login: $user)"`
 }
-
 // UserQuery end
 
 // ForksStarsLanguagesQuery start
 var StatsQuery struct {
 	User struct {
+		// Repositories data
 		Repositories struct {
 			Nodes []Nodes
 		} `graphql:"repositories(first: $repoCount, ownerAffiliations: OWNER)"`

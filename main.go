@@ -6,19 +6,31 @@ import (
 	"gitsee/api"
 	"log"
 	"net/http"
-	"os"
+	"net/http/httputil"
 )
 
 func main() {
-
+	
 	r := mux.NewRouter()
-
-	r.Handle("/user/{username}",
-		handlers.LoggingHandler(os.Stdout, http.HandlerFunc(api.GetUserInfo)))
-	r.Handle("/user/{username}/stats/{stat}",
-		handlers.LoggingHandler(os.Stdout, http.HandlerFunc(api.RepoStats)))
-	r.Handle("/user/{username}/colorSet",
-		handlers.LoggingHandler(os.Stdout, http.HandlerFunc(api.GetColorCodes)))
+	r.Use(loggingMiddleware)
+	
+	r.HandleFunc("/user/{username}", api.GetUserInfo)
+	r.HandleFunc("/user/{username}/stats/{stat}", api.RepoStats)
+	r.HandleFunc("/user/{username}/colorSet", api.GetColorCodes)
+	r.HandleFunc("/rateLimit", api.GetRateLimit)
 
 	log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(handlers.CompressHandler(r))))
+}
+
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Do stuff here
+		requestDump, err := httputil.DumpRequest(r, true)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(string(requestDump))
+		// Call the next handler, which can be another middleware in the chain, or the final handler.
+		next.ServeHTTP(w, r)
+	})
 }

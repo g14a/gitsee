@@ -32,7 +32,7 @@ func RepoStats(w http.ResponseWriter, r *http.Request) {
 
 	// err == nil means the stat is returned from cache if not store it in cache
 	if !ok {
-		err := service.ForksStarsLanguages(username, 100, 100)
+		err := service.GetStats(username, 100, 100)
 		if err != nil {
 			respondWithError(w, http.StatusNotFound, err.Error())
 			return
@@ -55,6 +55,10 @@ func RepoStats(w http.ResponseWriter, r *http.Request) {
 	} else {
 		respondWithJSON(w, http.StatusOK, response)
 	}
+}
+
+func GetRateLimit(w http.ResponseWriter, r *http.Request)  {
+	respondWithJSON(w, http.StatusOK, service.R)
 }
 
 func GetColorCodes(w http.ResponseWriter, r *http.Request) {

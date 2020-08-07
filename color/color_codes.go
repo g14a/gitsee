@@ -1,7 +1,6 @@
 package color
 
 import (
-	"fmt"
 	"gitsee/cache"
 	"log"
 	"math"
@@ -27,15 +26,13 @@ func GetColorCodesForLanguages(user string, languages map[string]int) {
 		colors := DarkThemedColors
 
 		languageColors := make(map[string]interface{})
-		
+
 		i := 0
 		for k, _ := range languages {
 			languageColors[k] = colors[i]
 			i++
 		}
 		
-		fmt.Println(languageColors)
-
 		LanguageColors = languageColors
 
 		if len(LanguageColors) != 0 {
