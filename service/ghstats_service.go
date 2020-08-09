@@ -33,7 +33,7 @@ func GetStats(user string, repoCount, languageCount int) error {
 
 	// Contributions of the user in the past year i.e from this time instance to exactly a year ago
 	contributions := make(map[string]interface{})
-
+	
 	for _, v := range StatsQuery.User.ContributionsCollection.ContributionCalendar.Weeks {
 		for _, week := range v.ContributionDays {
 			if week.Date != "" {
@@ -41,9 +41,9 @@ func GetStats(user string, repoCount, languageCount int) error {
 			}
 		}
 	}
-
+	
 	Contributions = contributions
-
+	
 	if cache.Set(user+"Contributions", Contributions) {
 		log.Println(user + "Contributions set in cache")
 	}
