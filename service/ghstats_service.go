@@ -36,7 +36,9 @@ func GetStats(user string, repoCount, languageCount int) error {
 
 	for _, v := range StatsQuery.User.ContributionsCollection.ContributionCalendar.Weeks {
 		for _, week := range v.ContributionDays {
-			contributions[week.Date] = week.ContributionCount
+			if week.Date != "" {
+				contributions[week.Date] = week.ContributionCount
+			}
 		}
 	}
 
