@@ -17,7 +17,6 @@ func main() {
 	r.HandleFunc("/user/{username}", api.GetUserInfo)
 	r.HandleFunc("/user/{username}/stats/{stat}", api.RepoStats)
 	r.HandleFunc("/user/{username}/colorSet", api.GetColorCodes)
-	r.HandleFunc("/rateLimit", api.GetRateLimit)
 
 	log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(handlers.CompressHandler(r))))
 }
