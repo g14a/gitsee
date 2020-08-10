@@ -2,6 +2,10 @@
 
 ## git-see
 
+#### Live on [https://gitsee-dev.netlify.app](https://gitsee-dev.netlify.app/)
+
+![](https://media.giphy.com/media/dyp4Rvma3SsCBpZbO2/giphy.gif)
+
 git-see is the backend service to visualize Github user and basic
 repo information of him/her. This can be used as a part of hiring 
 talent into your organization for getting a gist about the candidate.
