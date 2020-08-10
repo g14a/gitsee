@@ -22,9 +22,7 @@ func main() {
 	if os.Getenv("PORT") == "" {
 		log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(handlers.CompressHandler(r))))
 	} else {
-		if err := http.ListenAndServe(":"+os.Getenv("PORT"), handlers.CORS()(handlers.CompressHandler(r)); err != nil {
-			log.Fatal(err)
-		}
+		log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), handlers.CORS()(handlers.CompressHandler(r))))
 	}
 }
 
