@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
+	"os"
 )
 
 func main() {
@@ -17,8 +18,14 @@ func main() {
 	r.HandleFunc("/user/{username}", api.GetUserInfo)
 	r.HandleFunc("/user/{username}/stats/{stat}", api.RepoStats)
 	r.HandleFunc("/user/{username}/colorSet", api.GetColorCodes)
-
-	log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(handlers.CompressHandler(r))))
+	
+	if os.Getenv("PORT") == "" {
+		log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(handlers.CompressHandler(r))))
+	} else {
+		if err := http.ListenAndServe(":"+os.Getenv("PORT"), handlers.CORS()(handlers.CompressHandler(r)); err != nil {
+			log.Fatal(err)
+		}
+	}
 }
 
 func loggingMiddleware(next http.Handler) http.Handler {
