@@ -4,12 +4,16 @@
 
 #### Live on [https://gitsee-dev.netlify.app](https://gitsee-dev.netlify.app/)
 
-![](https://media.giphy.com/media/dyp4Rvma3SsCBpZbO2/giphy.gif)
+![](./static/torvalds1.png)
+
+![](./static/torvalds2.png)
+
 
 git-see is the backend service to visualize Github user and basic
 repo information of him/her. This can be used as a part of hiring 
 talent into your organization for getting a gist about the candidate.
 It is built using [Go](golang.org), [React](https://reactjs.org/) along with [Github V4 API](https://developer.github.com/v4/).
+
 #### Setup your local backend instance
 1. Clone this repo.
 2. Add a ```.env``` file to the project root directly and add a Github token in the
