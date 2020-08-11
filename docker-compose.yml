@@ -1,0 +1,17 @@
+version: '3'
+services:
+  gitsee-server:
+    image: munukutla97/gitsee:latest
+    container_name: gitsee-server
+    volumes:
+    - $HOME/.certs/:/etc/ssl/certs
+    ports:
+    - 8000:8000
+    env_file:
+      - .env
+
+  gitsee-ui:
+    image: munukutla97/fe-gitsee:latest
+    container_name: gitsee-ui
+    ports:
+    - 80:80
