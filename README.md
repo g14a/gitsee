@@ -2,7 +2,7 @@
 
 ## git-see
 
-#### Live on [https://gitsee-dev.netlify.app](https://gitsee-dev.netlify.app/)
+#### Live on [https://gitsee-dev.me](https://gitsee-dev.me/)
 
 ![](./static/torvalds1.png)
 
