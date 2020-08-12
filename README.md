@@ -30,10 +30,9 @@ following  format:
 4. Once you've done that, run ```npm start``` in the root directory.
 5. Head to [localhost:3000](localhost:3000) and check it out.
 
-#### Run on Docker
-1. Setup backend with
- 
-``` docker run -v /home/<USER>/.certs/:/etc/ssl/certs/ -it -p 8000:8000 --env-file .env```
-2. Make sure you have the Github token as  ```GHTOKEN=<your-token>``` in an ```.env``` file.
-3. You also need the minimum SSL certificates as we're interacting with Github's SSL. So we need to mount
-the user's ```~/.certs``` to the containers root ```/etc/ssl/certs``` directory.
+#### Docker
+1. Run ```docker-compose up``` after cloning this repo. Make sure
+you add an ```.env``` file and append the Github token in the mentioned
+format above.
+2. Once the containers are fired, head to [localhost:80](localhost:80)
+and voila!!
