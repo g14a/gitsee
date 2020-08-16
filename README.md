@@ -8,7 +8,6 @@
 
 ![](./static/torvalds2.png)
 
-
 git-see is the backend service to visualize Github user and basic
 repo information of him/her. This can be used as a part of hiring 
 talent into your organization for getting a gist about the candidate.
