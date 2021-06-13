@@ -1,1 +1,1 @@
-export const httpURL = process.env.REACT_APP_HEROKU_URL
+export const httpURL = "https://gitsee-14a.herokuapp.com/"
