@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/gitsee/static/css/main.96bc70f4.chunk.css",
-    "main.js": "/gitsee/static/js/main.0ccab8ef.chunk.js",
-    "main.js.map": "/gitsee/static/js/main.0ccab8ef.chunk.js.map",
+    "main.js": "/gitsee/static/js/main.75f26cfb.chunk.js",
+    "main.js.map": "/gitsee/static/js/main.75f26cfb.chunk.js.map",
     "runtime-main.js": "/gitsee/static/js/runtime-main.17da2fea.js",
     "runtime-main.js.map": "/gitsee/static/js/runtime-main.17da2fea.js.map",
     "static/css/2.547a24b4.chunk.css": "/gitsee/static/css/2.547a24b4.chunk.css",
     "static/js/2.7a3e4940.chunk.js": "/gitsee/static/js/2.7a3e4940.chunk.js",
     "static/js/2.7a3e4940.chunk.js.map": "/gitsee/static/js/2.7a3e4940.chunk.js.map",
     "index.html": "/gitsee/index.html",
-    "precache-manifest.9004a64d9e525ea08d96089d829efcd1.js": "/gitsee/precache-manifest.9004a64d9e525ea08d96089d829efcd1.js",
+    "precache-manifest.842e5a9588abbe1eb330d4cda2151c6b.js": "/gitsee/precache-manifest.842e5a9588abbe1eb330d4cda2151c6b.js",
     "service-worker.js": "/gitsee/service-worker.js",
     "static/css/2.547a24b4.chunk.css.map": "/gitsee/static/css/2.547a24b4.chunk.css.map",
     "static/css/main.96bc70f4.chunk.css.map": "/gitsee/static/css/main.96bc70f4.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.547a24b4.chunk.css",
     "static/js/2.7a3e4940.chunk.js",
     "static/css/main.96bc70f4.chunk.css",
-    "static/js/main.0ccab8ef.chunk.js"
+    "static/js/main.75f26cfb.chunk.js"
   ]
 }
