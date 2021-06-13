@@ -36,5 +36,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
         env:
           REACT_APP_HEROKU_URL: ${{secrets.REACT_APP_HEROKU_URL}}
-      - run: npm install
-      - run: npm run deploy
+      - run: |
+          git config --global user.email gowtham.m81197@gmail.com
+          git config --global user.name Gowtham Munukutla
+          git remote set-url origin https://g14a:${{ secrets.GITHUB_TOKEN }}@github.com/g14a/gitsee
+          npm install
+          npm run deploy
