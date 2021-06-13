@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ebb7e16344f2ce698f9712eb7998fe69",
+    "revision": "92bb858c06c9637476f7c3219bb002b7",
     "url": "/gitsee/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/gitsee/static/css/2.547a24b4.chunk.css"
   },
   {
-    "revision": "db1f83a73442d949e222",
+    "revision": "accfc71ec53ff20173d4",
     "url": "/gitsee/static/css/main.96bc70f4.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/gitsee/static/js/2.897fc2fd.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "db1f83a73442d949e222",
-    "url": "/gitsee/static/js/main.e95bd272.chunk.js"
+    "revision": "accfc71ec53ff20173d4",
+    "url": "/gitsee/static/js/main.f2c22d13.chunk.js"
   },
   {
     "revision": "adf55bddbaa3be11ffd3",
