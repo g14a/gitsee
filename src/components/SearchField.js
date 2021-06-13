@@ -11,10 +11,10 @@ class UserSearchForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault()
         const username = this.props.username
-        console.log(URL.httpURL + username,"============username========")
-        Axios.get(URL.httpURL + username)
+        console.log(`${URL.httpURL}/user/${username}`,"============username========")
+        Axios.get(`${URL.httpURL}/user/${username}`)
             .then(response => {
-                this.props.history.push(`/user/${this.props.username}`);
+                this.props.history.push(`/gitsee/user/${this.props.username}`);
             })
             .catch(error => {
                 store.addNotification({

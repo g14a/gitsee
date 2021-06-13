@@ -17,7 +17,7 @@ class ChartComponent extends Component {
     // for username use {this.props.username}
 
     async GetColorSet(user) {
-        var request = URL.httpURL + user + `/colorSet`
+        var request = `${URL.httpURL}/user/${user}/colorSet`
         return Axios.get(request)
             .then(response => {
                 return response.data
@@ -25,7 +25,7 @@ class ChartComponent extends Component {
     }
 
     componentDidMount() {
-        Axios.get(URL.httpURL + this.props.username + `/stats/PrimaryLanguages`)
+        Axios.get(`${URL.httpURL}/user/${this.props.username}/stats/PrimaryLanguages`)
             .then(response => {
                 var backgroundColors = []
                 var labels = []

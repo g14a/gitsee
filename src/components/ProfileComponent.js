@@ -15,7 +15,7 @@ class ProfileComponent extends Component {
   }
 
   componentDidMount() {
-    Axios.get(URL.httpURL + this.props.username)
+    Axios.get(`${URL.httpURL}/user/${this.props.username}`)
       .then(response => {
         if (response.data.location === "") {
           this.setState({
