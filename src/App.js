@@ -30,7 +30,6 @@ class App extends Component {
         <Helmet>
           <meta charSet="utf-8" />
           <title>Gitsee</title>
-          <link rel="icon" type="image/png" href={gitsee} sizes="16x16"/>
         </Helmet>
         <BrowserRouter>
           <Route exact path="/gitsee">
