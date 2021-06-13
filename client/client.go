@@ -2,11 +2,12 @@ package client
 
 import (
 	"context"
+	"os"
+	"sync"
+
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
-	"os"
-	"sync"
 )
 
 var (

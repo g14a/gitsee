@@ -18,6 +18,7 @@ var UserQuery struct {
 		}
 	} `graphql:"user(login: $user)"`
 }
+
 // UserQuery end
 
 // ForksStarsLanguagesQuery start

@@ -39,6 +39,6 @@ func UserDetails(user string) (interface{}, error) {
 	if cache.Set(user, jsonResponse) {
 		log.Println("Set ", user, "details in Cache")
 	}
-	
+
 	return jsonResponse, nil
 }

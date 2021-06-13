@@ -1,10 +1,11 @@
 package cache
 
 import (
-	"github.com/dgraph-io/ristretto"
 	"log"
 	"sync"
 	"time"
+
+	"github.com/dgraph-io/ristretto"
 )
 
 var RistrettoCache *ristretto.Cache

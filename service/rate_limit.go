@@ -21,15 +21,15 @@ type RateLimit struct {
 var R RateLimit
 
 func ResetEveryHour() {
-	ticker := time.NewTicker(5*time.Second)
+	ticker := time.NewTicker(5 * time.Second)
 	quit := make(chan struct{})
-	
+
 	go func() {
 		for {
 			select {
-			case <- ticker.C:
+			case <-ticker.C:
 				InitRateLimit()
-			case <- quit:
+			case <-quit:
 				ticker.Stop()
 			}
 		}

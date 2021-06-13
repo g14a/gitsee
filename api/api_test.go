@@ -1,10 +1,11 @@
 package api
 
 import (
-	_ "github.com/joho/godotenv/autoload"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func TestGetUserInfo(t *testing.T) {

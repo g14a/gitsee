@@ -32,7 +32,7 @@ func GetColorCodesForLanguages(user string, languages map[string]int) {
 			languageColors[k] = colors[i]
 			i++
 		}
-		
+
 		LanguageColors = languageColors
 
 		if len(LanguageColors) != 0 {

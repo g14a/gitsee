@@ -1,24 +1,25 @@
 package main
 
 import (
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	"gitsee/api"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"os"
+
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	
+
 	r := mux.NewRouter()
 	r.Use(loggingMiddleware)
-	
+
 	r.HandleFunc("/user/{username}", api.GetUserInfo)
 	r.HandleFunc("/user/{username}/stats/{stat}", api.RepoStats)
 	r.HandleFunc("/user/{username}/colorSet", api.GetColorCodes)
-	
+
 	if os.Getenv("PORT") == "" {
 		log.Fatal(http.ListenAndServe(":8000", handlers.CORS()(handlers.CompressHandler(r))))
 	} else {

@@ -2,3 +2,4 @@
 main
 gitsee
 *.env
+node_modules

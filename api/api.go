@@ -2,10 +2,11 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"gitsee/color"
 	"gitsee/service"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func GetUserInfo(w http.ResponseWriter, r *http.Request) {
@@ -18,6 +19,7 @@ func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		respondWithError(w, http.StatusNotFound, "Could not get user information")
+		return
 	}
 
 	respondWithJSON(w, http.StatusOK, userDetails)
@@ -41,24 +43,27 @@ func RepoStats(w http.ResponseWriter, r *http.Request) {
 		switch stat {
 		case "Contributions":
 			respondWithJSON(w, http.StatusOK, service.Contributions)
+			return
 		case "RepoForks":
 			respondWithJSON(w, http.StatusOK, service.ReposForks)
+			return
 		case "RepoStars":
 			respondWithJSON(w, http.StatusOK, service.ReposStars)
+			return
 		case "RepoLanguages":
 			respondWithJSON(w, http.StatusOK, service.LanguageFrequencies)
+			return
 		case "PrimaryLanguages":
 			respondWithJSON(w, http.StatusOK, service.PrimaryLanguages)
+			return
 		case "PrimaryLanguageStars":
 			respondWithJSON(w, http.StatusOK, service.PrimaryLanguageStars)
+			return
 		}
 	} else {
 		respondWithJSON(w, http.StatusOK, response)
+		return
 	}
-}
-
-func GetRateLimit(w http.ResponseWriter, r *http.Request)  {
-	respondWithJSON(w, http.StatusOK, service.R)
 }
 
 func GetColorCodes(w http.ResponseWriter, r *http.Request) {
