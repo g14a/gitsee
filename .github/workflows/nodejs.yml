@@ -37,4 +37,4 @@ jobs:
         env:
           REACT_APP_HEROKU_URL: ${{secrets.REACT_APP_HEROKU_URL}}
       - run: npm install
-      - run: npm deploy
+      - run: npm run deploy
