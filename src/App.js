@@ -5,8 +5,6 @@ import ReactNotification from "react-notifications-component";
 import PageComponent from "./components/PageComponent";
 import { Route, BrowserRouter } from "react-router-dom";
 import {Helmet} from "react-helmet";
-import {gitsee} from "./static/gitsee.png";
-
 
 class App extends Component {
   constructor(props) {
