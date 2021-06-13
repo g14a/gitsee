@@ -1,1 +1,1 @@
-export const httpURL = "https://gitsee-14a.herokuapp.com/"
+export const httpURL = "https://gitsee-14a.herokuapp.com"
