@@ -33,12 +33,12 @@ class App extends Component {
           <link rel="icon" type="image/png" href={gitsee} sizes="16x16"/>
         </Helmet>
         <BrowserRouter>
-          <Route exact path="/">
+          <Route exact path="/gitsee">
             <ReactNotification />
             <UserSearchFrom handleInputChange={this.handleInputChange} username={this.state.username} />
             <Footer />
           </Route>
-          <Route exact path="/user/:username" component={(userProps) => {
+          <Route exact path="/gitsee/user/:username" component={(userProps) => {
             return <PageComponent username={userProps.match.params.username} />
           }} >
           </Route>
