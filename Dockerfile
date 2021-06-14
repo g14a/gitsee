@@ -1,9 +1,9 @@
-FROM golang:1.14.4-alpine3.12 AS builder
+FROM golang:1.16-alpine3.13 AS builder
 WORKDIR /app
 COPY go.sum go.mod ./
 RUN go mod download
 ADD . /app
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
-FROM scratch
-COPY --from=builder /app/main /app/main
-CMD ["/app/main"]
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o gitsee .
+FROM alpine
+COPY --from=builder /app/gitsee /app/gitsee
+CMD ["/app/gitsee"]

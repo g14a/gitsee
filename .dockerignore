@@ -1,3 +1,5 @@
 .github
 .git
 static
+node_modules
+README.md

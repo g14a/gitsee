@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitsee
+spec:
+  selector:
+    matchLabels:
+      app: gitsee
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: gitsee
+    spec:
+      containers:
+        - name: gitsee
+          image: g14a/gitsee:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              protocol: TCP

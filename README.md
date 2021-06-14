@@ -2,7 +2,7 @@
 
 ## git-see
 
-#### Live on [https://gitsee-dev.me](https://gitsee-dev.me/)
+#### Live on [https://g14a.github.io/gitsee/](https://g14a.github.io/gitsee/)
 
 ![](./static/torvalds1.png)
 
